@@ -15,3 +15,7 @@ The following are additional qualitative results that were not included in the p
 | | | | |
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](imgs/3dchairs_0.png) |  ![](imgs/3dchairs_1.png) |  ![](imgs/3dchairs_2.png) |  ![](imgs/3dchairs_3.png)
+### 3DFaces
+| | | |
+:-------------------------:|:-------------------------:|:-------------------------:
+![](imgs/3dfaces_0.png) |  ![](imgs/3dfaces_1.png) |  ![](imgs/3dfaces_2.png)
