@@ -109,7 +109,7 @@ def _sample_var_batch(model, scale, B=20):
         zi = model.sess.run(model.mu, feed_dict={model.x: xi})
         zi /= scale
         D = np.argmin(np.var(zi, axis=0, ddof=1))
-        f = factor - 1
+        f = factor - model.dataset.diff
         bX.append(D)
         by.append(f)
     return np.asarray(bX), np.asarray(by)
@@ -128,7 +128,7 @@ def _compute_std(model, iters=100):
 def compute_metric(model):
     scale = _compute_std(model)
     bX, by = _sample_var_batch(model, scale, B=800)
-    V = np.zeros([model.z_dim, 5])
+    V = np.zeros([model.z_dim, model.dataset.n_factors])
     for bx, by in zip(bX, by):
         V[bx, by] += 1
     tX, ty = _sample_var_batch(model, scale, B=800)
