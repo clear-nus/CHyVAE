@@ -99,7 +99,7 @@ class CHyVAE:
     def train(self):
         # self.fixed_idx =  datasets.get_fixed_test_idx(name=self.dataset)
         self.train_batches = utils.batch_generator(self.dataset.imgs, self.batch_size)
-        self.test_batches = utils.batch_generator(self.dataset.imgs, batch_size=50)
+        self.test_batches = utils.batch_generator(self.dataset.imgs, batch_size=50) # Same as train
         train_path = os.path.join(self.results_path, 'train')
         if not os.path.exists(train_path):
             os.mkdir(train_path)
