@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import division
 import numpy as np
 import tensorflow as tf
-import tensorflow_probability as tfp
 import time
 import os
 import datasets
@@ -12,12 +11,8 @@ ds = tf.contrib.distributions
 
 
 class CHyVAE:
-    def __init__(self, dataset, z_dim, imsize, channels, batch_size, n_steps, nu, prior_cov, print_metric=False, run_no=None, seed=0):
-        # print(seed)
-        # np.random.seed(seed)
-        # tf.set_random_seed(seed)
+    def __init__(self, dataset, z_dim, imsize, channels, batch_size, n_steps, nu, prior_cov, run_no=None):
         self.dataset = datasets.load_dataset(dataset)
-        self.print_metric = False
         self.z_dim = z_dim
         self.imsize = imsize
         self.channels = channels
@@ -36,7 +31,6 @@ class CHyVAE:
         config.gpu_options.allow_growth = True
         self.sess = tf.Session(config=config)
         init_op = tf.global_variables_initializer()
-        # tf.get_default_graph().finalize()
         self.sess.run(init_op)
 
     def _encoder(self, x, reuse=False):
@@ -84,14 +78,12 @@ class CHyVAE:
         self.mu, Sigma = self._encoder(self.x)
         mvn = ds.MultivariateNormalFullCovariance(loc=self.mu, covariance_matrix=Sigma)
         z = mvn.sample()
-        # self.seed_check = mvn.sample()
-        z2 = tf.transpose(mvn.sample(1), perm=[1, 2, 0])  # TODO: Check this
+        z2 = tf.transpose(mvn.sample(1), perm=[1, 2, 0])
         x_hat_logits = self._decoder(z)
         self.loglikelihood = tf.reduce_mean(tf.reduce_sum(
             tf.nn.sigmoid_cross_entropy_with_logits(labels=self.x, logits=x_hat_logits), [1, 2, 3]))
         self.regularizer = -tf.reduce_mean(self._regularizer(
             z2, self.mu, Sigma, self.Psi, self.nu, 1))
-        # ELBO = self.loglikelihood + 1 * self.regularizer  # Dropped constants
         self.loss = self.loglikelihood + self.regularizer
         self.optim_op = tf.train.AdamOptimizer(1e-4).minimize(self.loss)
 
@@ -130,10 +122,6 @@ class CHyVAE:
                 z_np = utils.sample_noise(self.Psi_np, self.nu_np, 100)
                 x_hat_np = self.sess.run(self.fake_images, feed_dict={self.noise: z_np})
                 utils.render_images(x_hat_np, image_base_name.format('iw', stp))
-
-                # z_np = np.random.randn(100, self.z_dim)
-                # x_hat_np = self.sess.run(self.fake_images, feed_dict={self.noise: z_np})
-                # utils.render_images(x_hat_np, image_base_name.format('nml', stp))
             if stp % 10000 == 0:
                 disent_metric = utils.compute_metric(self)[1]
                 metrics_history['iter'].append(stp)
@@ -157,7 +145,6 @@ class CHyVAE:
                 break
             nu = nu * 4
 
-        # x_test_np = self.test_X[self.fixed_idx] if len(self.fixed_idx) == 50 else next(self.test_batches)
         x_test_np = next(self.test_batches)
         x_np = np.vstack([x_test_np, next(self.train_batches), next(self.test_batches)])
         means, = self.sess.run([self.mu], feed_dict={self.x: x_np})
