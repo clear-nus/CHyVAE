@@ -32,4 +32,3 @@ if __name__ == '__main__':
     model = CHyVAE(args.dataset, args.z_dim, args.image_size, args.channels, args.batch_size,
                    args.n_steps, args.nu, np.eye(args.z_dim), args.run)
     model.train()
-    model.generate()
