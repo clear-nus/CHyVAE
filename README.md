@@ -1,5 +1,5 @@
 # CHyVAE
-Code for our paper [Hyperprior Induced Unsupervised Disentanglement of Latent Representations](https://arxiv.org/abs/1809.04497) (AAAI-19)
+Code for our paper [Hyperprior Induced Unsupervised Disentanglement of Latent Representations](https://arxiv.org/abs/1809.04497) (AAAI-19). The correlated ellipses dataset used in the paper can be found [here](https://github.com/crslab/correlated-ellipses).
 
 ## Requirements
 
@@ -42,15 +42,15 @@ Currently the repository includes code for experimenting on the following datase
 * CorrelatedEllipses
 
 ## Additional Results
-For additonal qualitative results, please check [AdditionalResults.md](AdditionalResults.md)
+For additonal qualitative results, please check [AdditionalResults.md](AdditionalResults.md).
 
 ## Contact
-For any questions regarding the code or the paper, please email abdulfatir@u.nus.edu
+For any questions regarding the code or the paper, please email [abdulfatir@u.nus.edu](mailto:abdulfatir@u.nus.edu).
 
 ## BibTeX
 
 ```
-@inproceedings{ansari2018hyperprior,
+@inproceedings{ansari2019hyperprior,
   title={Hyperprior Induced Unsupervised Disentanglement of Latent Representations},
   author={Ansari, Abdul Fatir and Soh, Harold},
   booktitle={AAAI Conference on Artificial Intelligence},
